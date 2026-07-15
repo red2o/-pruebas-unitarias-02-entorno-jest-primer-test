@@ -10,6 +10,7 @@ describe("GET /tareas", () => {
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
     expect(response.body[0]).toHaveProperty("titulo");
+    expect(response.body[0]).toHaveProperty("descripcion");
     expect(response.body[0]).toHaveProperty("completada");
   });
 });
@@ -32,7 +33,7 @@ describe("POST /tareas", () => {
     expect(response.body.completada).toBe(false);
   });
 
-  it("Debe responder con 400 si falta algun campo obligatorio", async () => {
+  it("Debe responder con 400 si falta un campo obligatorio", async () => {
     const tareaInvalida = {
       titulo: "Tarea sin descripcion"
     };

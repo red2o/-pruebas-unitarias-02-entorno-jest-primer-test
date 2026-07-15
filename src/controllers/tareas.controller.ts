@@ -1,41 +1,28 @@
 ﻿import { Request, Response } from "express";
+import {
+  obtenerTodasLasTareas,
+  crearTarea
+} from "../services/tareas.service";
 
-let tareas = [
-  {
-    id: 1,
-    titulo: "Estudiar pruebas",
-    completada: false,
-    descripcion: "Estudiar pruebas unitarias usando Jest"
-  },
-  {
-    id: 2,
-    titulo: "Hacer ejercicio",
-    completada: true,
-    descripcion: "Correr 30 minutos a 10 km/h"
-  }
-];
-
-export function obtenerTareas(_req: Request, res: Response) {
-  return res.status(200).json(tareas);
+export function getTareas(_req: Request, res: Response): void {
+  res.status(200).json(obtenerTodasLasTareas());
 }
 
-export function crearTarea(req: Request, res: Response) {
+export function postTarea(req: Request, res: Response): void {
   const { titulo, descripcion } = req.body;
 
   if (!titulo || !descripcion) {
-    return res.status(400).json({
-      mensaje: "El titulo y la descripcion son obligatorios"
+    res.status(400).json({
+      mensaje: "Faltan campos obligatorios"
     });
+    return;
   }
 
-  const nuevaTarea = {
-    id: tareas.length + 1,
+  const nueva = crearTarea({
     titulo,
     descripcion,
     completada: false
-  };
+  });
 
-  tareas.push(nuevaTarea);
-
-  return res.status(201).json(nuevaTarea);
+  res.status(201).json(nueva);
 }
